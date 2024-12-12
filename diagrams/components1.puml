@@ -1,0 +1,25 @@
+@startuml
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+Person(user, "Пользователь системы", "")
+
+Container(gateway, "API Gateway", "Kong", "Маршрутизация запросов")
+
+System_Boundary(clients, "Микросервис по управлению данными клиента", "Python") {
+
+    Container(users, "Микросервис управления клиентами", "Python", "Управляет профилями клиентов") {
+        Component(userController, "Контроллер", "Python Flask", "Обрабатывает запросы на изменение профилей клиентов")
+        Component(userDBLayer, "Репозиторий для взаимодействия с БД", "Python", "")
+    }
+    ContainerDb(db_users, "База данных микросервиса клиентов", "PostgreSQL")
+}
+
+Rel(user, gateway, "")
+
+Rel(gateway, userController, "")
+Rel(userController, userDBLayer, "")
+Rel(userDBLayer, db_users, "Запись \ Чтение данных", "SQL")
+
+
+@enduml
