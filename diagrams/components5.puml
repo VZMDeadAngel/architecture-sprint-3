@@ -1,0 +1,23 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+Person(user, "Пользователь системы", "Взаимодействует с системой через мобильное приложение или веб интерфейс")
+Container(gateway, "API Gateway", "Kong", "Маршрутизация запросов")
+
+System_Boundary(current, "Микросервис управления автоматическими сценариями и их выполнения", "Python") {
+    Container(auto, "Микросервис управления автоматическими сценариями и их выполнения", "Python", "Управляет домом") {
+        Component(autoController, "Контроллер", "Python Flask", "Обрабатывает запросы на изменение свойств дома")
+        Component(autoDBLayer, "Репозиторий для взаимодействия с БД", "Python", "Взаимодействует с базой данных")
+        Component(autoScheduler, "Модуль периодического выполнения пользовательских сценариев")
+    }
+    ContainerDb(db_auto, "База данных для Микросервиса управления автоматическими сценариями", "PostgreSQL")
+}
+
+Rel(user, gateway, "")
+
+Rel(gateway, autoController, "")
+Rel(autoController, autoDBLayer, "")
+Rel(autoScheduler, autoDBLayer, "")
+Rel(autoDBLayer, db_auto, "Запись \ Чтение данных", "SQL")
+
+@enduml

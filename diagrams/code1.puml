@@ -14,6 +14,11 @@ class User{
     +House getAvalibleHouses()
 }
 
+class Family{
+    +User administrator
+    +List<User> members
+}
+
 class Module{
     +House house
     +Room room
@@ -30,6 +35,7 @@ class Rooms{
     +House house
     +List getRooms()
     +void addRoom()
+    +List<Devices> getDevices()
 }
 
 class UserRole {
@@ -51,8 +57,9 @@ UserRole -- User
 House -- Rooms
 House -- User
 UserRole -- House
-House -- Module
-Module -- Rooms
 Module -- Device
+Family -- User
+User -- Family
+Device -- Rooms
 
 @enduml

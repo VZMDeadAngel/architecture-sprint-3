@@ -7,6 +7,13 @@ entity "Пользователь" as User {
     email : String
     password : String
     created_at : Date
+    famyly_id : Integer
+}
+
+entity "Семья" as Family {
+    * id : Integer
+    --
+    administrator_id : Integer
 }
 
 entity "Роли пользователей" as UserRole {
@@ -72,16 +79,17 @@ entity "Телеметрия" as TelemetryData {
     value : String
 }
 
-User ||--|{UserRole
+User ||--|{ UserRole
 Role ||--|{ UserRole
-House ||--|{UserRole
-House ||--|{Room
+House ||--|{ UserRole
+House ||--|{ Room
+
+Family ||--|| User
 
 User ||--o{ House
 House ||--o{ Module
-Room ||--o{ Module
 
-Module ||--o{ Device
+Room ||--o{ Device
 Device ||--|| DeviceType
 Device ||--o{ TelemetryData
 
