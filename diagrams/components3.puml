@@ -1,0 +1,21 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+Person(user, "Пользователь системы", "Взаимодействует с системой через мобильное приложение или веб интерфейс")
+Container(gateway, "API Gateway", "Kong", "Маршрутизация запросов")
+
+System_Boundary(current, "Микросервис телеметрии", "Python") {
+    Container(telemetry, "Микросервис телеметрии", "Python", "Управляет датчиками клиента") {
+        Component(telemetryController, "Контроллер", "Python Flask", "Обрабатывает запросы на работу с телеметрией")
+        Component(telemetryDBLayer, "Репозиторий для взаимодействия с БД", "Python", "Взаимодействует с базой данных")
+    }
+    ContainerDb(db_telemetry, "База данных для Микросервиса телеметрии", "PostgreSQL")
+}
+
+Rel(user, gateway, "")
+
+Rel(gateway, telemetryController, "")
+Rel(telemetryController, telemetryDBLayer, "")
+Rel(telemetryDBLayer, db_telemetry, "Запись \ Чтение данных", "SQL")
+
+@enduml

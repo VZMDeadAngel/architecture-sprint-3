@@ -1,0 +1,65 @@
+@startuml
+
+top to bottom direction
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+class Role{
+    +Role role
+    +List getPermission()
+}
+
+class User{
+    +User user
+    +House getAvalibleHouses()
+}
+
+class Family{
+    +User administrator
+    +List<User> members
+}
+
+class Module{
+    +House house
+    +Room room
+    +List<Devices> getDevices()
+}
+
+class House{
+    +User user
+    +List getHouses()
+    +void addHouse()
+}
+
+class Rooms{
+    +House house
+    +List getRooms()
+    +void addRoom()
+    +List<Devices> getDevices()
+}
+
+class UserRole {
+    +User user
+    +Role role
+    +House house
+    +bool hasPermission()
+}
+
+class Device {
+  +String type
+  +void register()
+  +void unregister()
+  +List getDevices()
+}
+
+Role -- User
+UserRole -- User
+House -- Rooms
+House -- User
+UserRole -- House
+Module -- Device
+Family -- User
+User -- Family
+Device -- Rooms
+
+@enduml
